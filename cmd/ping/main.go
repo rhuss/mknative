@@ -15,6 +15,15 @@ func main() {
     }
     log.Printf("target:  %s\n", target)
 
+    // Start an HTTP Server
+    h := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+        w.WriteHeader(http.StatusOK)
+    })
+    server := http.Server{Addr: ":8080", Handler: h}
+    go server.ListenAndServe()
+
+
+
     transport := http.DefaultTransport.(*http.Transport).Clone()
 
     // make sure to create a connection per request
@@ -44,6 +53,5 @@ func main() {
         }
 
         time.Sleep(2 * time.Second)
-
     }
 }

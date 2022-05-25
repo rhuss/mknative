@@ -1,0 +1,23 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-all-to-kourier-internal
+  namespace: tenant1-ns1
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            knative.dev/tenant: tenant1
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            app.kubernetes.io/component: net-kourier
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: knative-serving
+  policyTypes:
+    - Egress
+    - Ingress
